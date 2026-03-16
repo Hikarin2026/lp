@@ -1,0 +1,605 @@
+<div id="nlp-lp-wrap">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@400;500&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ivory:#FFFDF8;--petal:#FDF0F0;--lavender-soft:#F0EDF8;
+  --rose:#E8A4A4;--rose-mid:#D4797A;--rose-deep:#B85C6E;
+  --mauve:#9B7B9B;--mauve-light:#C4AACC;
+  --sage:#84AE96;--sage-deep:#4D876A;
+  --gold:#C9A96E;--gold-light:#E8D5A8;
+  --text:#2D1F2D;--muted:#7A6070;--light:#B09AA8;
+  --border:rgba(200,160,180,0.25);
+}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--ivory);color:var(--text);font-weight:300;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:-20%;right:-15%;width:55vw;height:55vw;border-radius:50%;background:radial-gradient(circle,rgba(232,164,164,0.12) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-10%;left:-10%;width:45vw;height:45vw;border-radius:50%;background:radial-gradient(circle,rgba(132,174,150,0.1) 0%,transparent 70%);pointer-events:none;z-index:0;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.3rem 4rem;position:sticky;top:0;background:rgba(255,253,248,0.93);backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid var(--border);}
+.logo-wrap{display:flex;flex-direction:column;gap:0.1rem;}
+.logo-main{font-family:'Shippori Mincho',serif;font-size:1.05rem;font-weight:500;color:var(--rose-deep);letter-spacing:0.08em;}
+.logo-sub{font-size:0.6rem;letter-spacing:0.22em;color:var(--light);text-transform:uppercase;}
+.nav-links{display:flex;gap:2.2rem;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:0.78rem;letter-spacing:0.08em;transition:color 0.2s;}
+.nav-links a:hover{color:var(--rose-mid);}
+.nav-cta{background:linear-gradient(135deg,var(--rose-deep) 0%,var(--mauve) 100%);color:white;padding:0.55rem 1.5rem;font-size:0.75rem;letter-spacing:0.12em;border:none;cursor:pointer;border-radius:2rem;transition:opacity 0.2s,transform 0.2s;}
+.nav-cta:hover{opacity:0.88;transform:translateY(-1px);}
+.hero{min-height:92vh;display:grid;grid-template-columns:1.05fr 0.95fr;align-items:center;padding:2rem 4rem 3rem;gap:3rem;position:relative;overflow:hidden;z-index:1;}
+.hero-deco{position:absolute;top:5%;right:3%;font-family:'Cormorant Garamond',serif;font-size:18rem;color:rgba(232,164,164,0.07);pointer-events:none;line-height:1;z-index:0;}
+.hero-eyebrow{font-size:0.7rem;letter-spacing:0.3em;color:var(--rose-mid);text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.8rem;}
+.hero-eyebrow::before{content:'✦';font-size:0.5rem;color:var(--gold);}
+h1{font-family:'Shippori Mincho',serif;font-size:3.1rem;font-weight:400;line-height:1.5;color:var(--text);margin-bottom:1.4rem;}
+h1 em{font-style:italic;color:var(--rose-deep);}
+h1 .accent{color:var(--mauve);}
+.hero-lead{font-size:0.88rem;line-height:2.1;color:var(--muted);max-width:430px;margin-bottom:1.4rem;}
+.nlp-pill{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,rgba(232,164,164,0.15),rgba(155,123,155,0.12));border:1px solid rgba(200,160,180,0.4);padding:0.45rem 1.1rem;font-size:0.73rem;color:var(--rose-deep);letter-spacing:0.06em;border-radius:2rem;margin-bottom:2rem;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-grad{background:linear-gradient(135deg,var(--rose-deep) 0%,var(--mauve) 100%);color:white;padding:0.95rem 2.4rem;font-size:0.78rem;letter-spacing:0.14em;border:none;cursor:pointer;border-radius:2rem;transition:all 0.25s;box-shadow:0 4px 20px rgba(184,92,110,0.25);}
+.btn-grad:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(184,92,110,0.35);}
+.btn-soft{background:white;border:1.5px solid var(--rose);color:var(--rose-deep);padding:0.95rem 2rem;font-size:0.78rem;letter-spacing:0.14em;cursor:pointer;border-radius:2rem;transition:all 0.2s;}
+.btn-soft:hover{background:var(--petal);border-color:var(--rose-mid);}
+.hero-vis{display:flex;align-items:center;justify-content:center;position:relative;z-index:1;}
+.vis-outer{width:360px;height:360px;border-radius:50%;background:linear-gradient(145deg,rgba(253,240,240,0.9) 0%,rgba(240,237,248,0.6) 60%,rgba(235,245,240,0.5) 100%);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 20px 60px rgba(200,150,170,0.18);}
+.vis-ring1{width:290px;height:290px;border-radius:50%;border:1px solid rgba(200,160,180,0.35);display:flex;align-items:center;justify-content:center;animation:spin 40s linear infinite;}
+.vis-ring2{width:210px;height:210px;border-radius:50%;border:1px dashed rgba(155,123,155,0.3);display:flex;align-items:center;justify-content:center;animation:spin 25s linear infinite reverse;}
+.vis-center{width:130px;height:130px;border-radius:50%;background:linear-gradient(145deg,white,rgba(253,240,240,0.8));box-shadow:0 4px 24px rgba(200,150,170,0.2);display:flex;align-items:center;justify-content:center;}
+.vis-glyph{font-family:'Cormorant Garamond',serif;font-size:3.8rem;color:var(--rose-mid);opacity:0.7;}
+.ring-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(201,169,110,0.5);}
+.rd1{top:0;left:50%;transform:translate(-50%,-50%);}
+.rd2{top:25%;right:0;transform:translate(50%,-50%);}
+.rd3{bottom:5%;right:20%;transform:translate(50%,50%);}
+.rd4{bottom:0;left:40%;transform:translate(-50%,50%);width:5px;height:5px;}
+.rd5{top:15%;left:5%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--rose);}
+.float-chip{position:absolute;background:white;border:1px solid var(--border);padding:0.6rem 1.1rem;font-size:0.72rem;color:var(--muted);border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.07);}
+.float-chip strong{display:block;color:var(--rose-deep);font-weight:400;font-size:0.82rem;}
+.fc1{top:4%;left:-10%;}
+.fc2{bottom:10%;right:-10%;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+section{padding:6rem 4rem;position:relative;z-index:1;}
+.sec-label{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--rose-mid);text-align:center;margin-bottom:0.8rem;display:flex;align-items:center;justify-content:center;gap:0.7rem;}
+.sec-label::before,.sec-label::after{content:'✦';color:var(--gold);font-size:0.45rem;}
+h2{font-family:'Shippori Mincho',serif;font-size:2.2rem;font-weight:400;text-align:center;margin-bottom:1rem;line-height:1.45;letter-spacing:0.05em;}
+.sec-sub{text-align:center;color:var(--muted);font-size:0.86rem;line-height:2;max-width:520px;margin:0 auto 3.5rem;}
+.pillars-bg{background:linear-gradient(160deg,var(--petal) 0%,var(--lavender-soft) 100%);}
+.pillars-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:900px;margin:0 auto;}
+.pillar-card{background:white;border-radius:1.5rem;padding:2.5rem 2.2rem;box-shadow:0 4px 30px rgba(200,150,170,0.1);border:1px solid rgba(232,164,164,0.2);transition:transform 0.25s;}
+.pillar-card:hover{transform:translateY(-4px);}
+.pillar-icon-wrap{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:1.3rem;}
+.pi-rose{background:linear-gradient(135deg,rgba(253,240,240,1),rgba(232,213,168,0.3));}
+.pi-mauve{background:linear-gradient(135deg,rgba(240,237,248,1),rgba(200,170,200,0.3));}
+.pillar-card h3{font-family:'Shippori Mincho',serif;font-size:1.15rem;font-weight:500;color:var(--text);margin-bottom:0.8rem;}
+.pillar-card p{font-size:0.83rem;color:var(--muted);line-height:2.1;}
+.pillar-tag{display:inline-block;margin-top:1.2rem;padding:0.28rem 0.9rem;border-radius:2rem;background:rgba(184,92,110,0.08);font-size:0.68rem;color:var(--rose-deep);letter-spacing:0.1em;}
+.nlp-bg{background:var(--ivory);}
+.nlp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:960px;margin:0 auto;}
+.nlp-card{background:white;border-radius:1.2rem;padding:1.8rem 1.5rem;border:1px solid var(--border);position:relative;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s;}
+.nlp-card:hover{box-shadow:0 8px 30px rgba(200,150,170,0.15);transform:translateY(-3px);}
+.nlp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose) 0%,var(--mauve-light) 100%);border-radius:1.2rem 1.2rem 0 0;}
+.nlp-card h4{font-family:'Shippori Mincho',serif;font-size:1rem;font-weight:500;color:var(--text);margin-bottom:0.6rem;}
+.nlp-card p{font-size:0.8rem;color:var(--muted);line-height:1.95;}
+.nlp-tag{display:inline-block;margin-top:0.7rem;font-size:0.65rem;color:var(--mauve);letter-spacing:0.1em;text-transform:uppercase;background:rgba(155,123,155,0.08);padding:0.2rem 0.6rem;border-radius:1rem;}
+.about-bg{background:linear-gradient(160deg,var(--lavender-soft) 0%,var(--petal) 100%);}
+.about-grid{display:grid;grid-template-columns:1fr 1.45fr;gap:5rem;align-items:center;max-width:960px;margin:0 auto;}
+.about-frame{aspect-ratio:3/4;border-radius:2rem;position:relative;box-shadow:0 10px 40px rgba(200,150,170,0.15);max-height:420px;overflow:hidden;border:1px solid rgba(232,164,164,0.2);}
+.about-frame::before{content:'';position:absolute;bottom:-30%;right:-25%;width:70%;height:70%;border-radius:50%;background:radial-gradient(circle,rgba(155,123,155,0.12) 0%,transparent 70%);}
+.about-glyph{font-family:'Cormorant Garamond',serif;font-size:7rem;color:rgba(184,92,110,0.15);position:relative;z-index:1;}
+.about-txt .sec-label{text-align:left;justify-content:flex-start;}
+.about-txt h2{text-align:left;margin-bottom:0.2rem;}
+.about-ruby{font-size:0.78rem;color:var(--light);letter-spacing:0.14em;display:block;margin-bottom:1.5rem;}
+.about-txt p{font-size:0.85rem;color:var(--muted);line-height:2.15;margin-bottom:0.9rem;}
+.cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-top:1.5rem;}
+.cred{border-radius:0.8rem;padding:0.7rem 1rem;background:white;box-shadow:0 2px 12px rgba(200,150,170,0.1);border:1px solid rgba(232,164,164,0.15);}
+.cred-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rose-mid);margin-bottom:0.2rem;}
+.cred-val{font-size:0.8rem;color:var(--text);font-weight:400;}
+.svc-bg{background:var(--ivory);}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:860px;margin:0 auto;}
+.svc-card{background:white;border-radius:1.5rem;padding:2.5rem 2.2rem;border:1px solid var(--border);box-shadow:0 4px 24px rgba(200,150,170,0.08);transition:all 0.25s;position:relative;overflow:hidden;}
+.svc-card::after{content:'';position:absolute;bottom:-30%;right:-20%;width:50%;height:50%;border-radius:50%;background:radial-gradient(circle,rgba(232,164,164,0.08) 0%,transparent 70%);pointer-events:none;}
+.svc-card:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(200,150,170,0.16);}
+.svc-num{position:absolute;top:1.5rem;right:2rem;font-family:'Cormorant Garamond',serif;font-size:3rem;color:rgba(200,160,180,0.2);font-weight:300;}
+.svc-icon-wrap{width:52px;height:52px;border-radius:50%;margin-bottom:1.2rem;background:linear-gradient(135deg,var(--petal),rgba(240,237,248,0.8));display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.svc-card h3{font-family:'Shippori Mincho',serif;font-size:1.1rem;font-weight:500;color:var(--text);margin-bottom:0.8rem;}
+.svc-card p{font-size:0.83rem;color:var(--muted);line-height:2.05;}
+.svc-detail{margin-top:1.2rem;padding-top:0.9rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--sage-deep);letter-spacing:0.04em;}
+.price-bg{background:linear-gradient(160deg,var(--petal) 0%,var(--lavender-soft) 100%);}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:960px;margin:0 auto;}
+.plan{background:white;border-radius:1.5rem;padding:2.2rem 1.8rem;text-align:center;border:1px solid rgba(232,164,164,0.2);box-shadow:0 4px 24px rgba(200,150,170,0.08);transition:transform 0.2s;position:relative;}
+.plan:hover{transform:translateY(-4px);}
+.plan.feat{background:linear-gradient(155deg,var(--rose-deep) 0%,var(--mauve) 100%);border-color:transparent;box-shadow:0 8px 40px rgba(184,92,110,0.3);}
+.plan-badge-wrap{position:absolute;top:-0.9rem;left:50%;transform:translateX(-50%);}
+.plan-badge-pill{background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 100%);color:var(--text);font-size:0.63rem;letter-spacing:0.12em;padding:0.22rem 1rem;border-radius:2rem;white-space:nowrap;box-shadow:0 2px 10px rgba(201,169,110,0.4);}
+.plan-name{font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose-mid);margin-bottom:1.2rem;}
+.feat .plan-name{color:rgba(255,255,255,0.65);}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--text);line-height:1;}
+.feat .plan-price{color:white;}
+.plan-period{font-size:0.72rem;color:var(--muted);display:block;margin-bottom:0.3rem;}
+.feat .plan-period{color:rgba(255,255,255,0.55);}
+.plan-dur{font-size:0.78rem;color:var(--rose-mid);display:block;margin-bottom:1.6rem;font-weight:400;}
+.feat .plan-dur{color:rgba(255,255,255,0.8);}
+.plan-features{list-style:none;text-align:left;margin-bottom:1.8rem;}
+.pf{font-size:0.8rem;color:var(--muted);padding:0.42rem 0;border-bottom:1px solid rgba(200,160,180,0.15);display:flex;align-items:flex-start;gap:0.5rem;}
+.feat .pf{color:rgba(255,255,255,0.82);border-bottom-color:rgba(255,255,255,0.12);}
+.pf::before{content:'✦';color:var(--rose);font-size:0.45rem;flex-shrink:0;margin-top:0.32rem;}
+.feat .pf::before{color:rgba(255,255,255,0.5);}
+.pf-special{font-size:0.8rem;padding:0.42rem 0;border-bottom:1px solid rgba(255,255,255,0.12);display:flex;align-items:flex-start;gap:0.5rem;color:#FFB7C5;font-weight:400;}
+.pf-special::before{content:'🎁';font-size:0.7rem;flex-shrink:0;}
+.pcta{display:block;width:100%;padding:0.85rem;font-size:0.73rem;letter-spacing:0.14em;border:none;cursor:pointer;border-radius:2rem;transition:all 0.2s;}
+.pcta-grad{background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;box-shadow:0 4px 16px rgba(184,92,110,0.28);}
+.pcta-grad:hover{opacity:0.9;transform:translateY(-1px);}
+.pcta-white{background:white;color:var(--rose-deep);}
+.pcta-white:hover{background:rgba(255,255,255,0.9);}
+.pcta-outline{background:transparent;border:1.5px solid var(--rose);color:var(--rose-mid);}
+.pcta-outline:hover{background:var(--petal);}
+.flow-bg{background:var(--ivory);}
+.flow-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:960px;margin:0 auto;position:relative;}
+.flow-steps::before{content:'';position:absolute;top:1.75rem;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--rose) 30%,var(--mauve) 70%,transparent);}
+.fstep{text-align:center;padding:0 0.5rem;position:relative;z-index:1;}
+.fstep-circle{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-family:'Cormorant Garamond',serif;font-size:1.3rem;box-shadow:0 4px 16px rgba(184,92,110,0.28);}
+.fstep h4{font-family:'Shippori Mincho',serif;font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:0.45rem;}
+.fstep p{font-size:0.76rem;color:var(--muted);line-height:1.8;}
+.voices-bg{background:linear-gradient(160deg,var(--lavender-soft) 0%,var(--petal) 100%);}
+.voices-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;max-width:960px;margin:0 auto;}
+.vcard{background:white;border-radius:1.3rem;padding:1.8rem;border:1px solid rgba(232,164,164,0.18);box-shadow:0 4px 20px rgba(200,150,170,0.09);}
+.vquote{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--rose);line-height:1;margin-bottom:0.2rem;opacity:0.6;}
+.stars{display:flex;gap:2px;margin-bottom:0.6rem;}
+.star{color:var(--gold);font-size:0.7rem;}
+.vtext{font-size:0.82rem;color:var(--muted);line-height:2;font-style:italic;margin-bottom:1.2rem;}
+.vauthor{display:flex;align-items:center;gap:0.7rem;}
+.vavatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;}
+.va1{background:linear-gradient(135deg,rgba(232,164,164,0.3),rgba(232,164,164,0.1));color:var(--rose-mid);}
+.va2{background:linear-gradient(135deg,rgba(132,174,150,0.3),rgba(132,174,150,0.1));color:var(--sage-deep);}
+.va3{background:linear-gradient(135deg,rgba(201,169,110,0.3),rgba(201,169,110,0.1));color:var(--gold);}
+.vname{font-size:0.8rem;color:var(--text);}
+.vsub{font-size:0.7rem;color:var(--light);}
+.cta-sec{padding:7rem 4rem;text-align:center;background:linear-gradient(155deg,var(--rose-deep) 0%,var(--mauve) 55%,#7A6AA0 100%);position:relative;overflow:hidden;z-index:1;}
+.cta-deco1{position:absolute;top:-10%;left:-5%;width:40vw;height:40vw;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;}
+.cta-deco2{position:absolute;bottom:-15%;right:-8%;width:35vw;height:35vw;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+.cta-sec .sec-label{color:rgba(255,255,255,0.55);}
+.cta-sec .sec-label::before,.cta-sec .sec-label::after{color:rgba(255,255,255,0.4);}
+.cta-sec h2{color:white;margin-bottom:1rem;}
+.btn-cta-light{background:white;color:var(--rose-deep);padding:1rem 3rem;font-size:0.8rem;letter-spacing:0.16em;border:none;cursor:pointer;border-radius:3rem;transition:all 0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.15);margin-top:0.5rem;}
+.btn-cta-light:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.2);}
+footer{background:var(--text);color:rgba(255,255,255,0.38);text-align:center;padding:2rem;font-size:0.72rem;letter-spacing:0.1em;}
+footer span{color:rgba(255,255,255,0.6);}
+@media(max-width:900px){
+  nav{padding:1.1rem 1.5rem;}.nav-links,.hero-vis{display:none;}
+  .hero{grid-template-columns:1fr;padding:2.5rem 1.5rem;min-height:auto;}
+  h1{font-size:2rem;}
+  section,.pillars-bg,.nlp-bg,.about-bg,.svc-bg,.price-bg,.flow-bg,.voices-bg,.cta-sec{padding:3.5rem 1.5rem;}
+  .nlp-grid,.svc-grid,.plans,.voices-grid,.about-grid,.pillars-grid{grid-template-columns:1fr;}
+  .flow-steps{grid-template-columns:1fr 1fr;gap:2rem;}.flow-steps::before{display:none;}
+  .cred-grid{grid-template-columns:1fr;}
+}
+
+
+#nlp-lp-wrap { display: block !important; margin: 0 !important; padding: 0 !important; }
+#nlp-lp-wrap nav { display: flex !important; background: rgba(255,253,248,0.93) !important; }
+#nlp-lp-wrap body, #nlp-lp-wrap { font-family: 'Noto Sans JP', sans-serif !important; background: #FFFDF8 !important; color: #2D1F2D !important; }
+#nlp-lp-wrap h1, #nlp-lp-wrap h2, #nlp-lp-wrap h3, #nlp-lp-wrap h4 { font-family: 'Shippori Mincho', serif !important; color: #2D1F2D !important; }
+#nlp-lp-wrap section { padding: 6rem 4rem !important; position: relative !important; }
+#nlp-lp-wrap a { text-decoration: none !important; }
+#nlp-lp-wrap * { box-sizing: border-box !important; }
+#nlp-lp-wrap .hero { min-height: 92vh !important; display: grid !important; grid-template-columns: 1.05fr 0.95fr !important; }
+#nlp-lp-wrap .pillars-bg { background: linear-gradient(160deg,#FDF0F0 0%,#F0EDF8 100%) !important; }
+#nlp-lp-wrap .about-bg { background: linear-gradient(160deg,#F0EDF8 0%,#FDF0F0 100%) !important; }
+#nlp-lp-wrap .price-bg { background: linear-gradient(160deg,#FDF0F0 0%,#F0EDF8 100%) !important; }
+#nlp-lp-wrap .voices-bg { background: linear-gradient(160deg,#F0EDF8 0%,#FDF0F0 100%) !important; }
+#nlp-lp-wrap .cta-sec { background: linear-gradient(155deg,#B85C6E 0%,#9B7B9B 55%,#7A6AA0 100%) !important; }
+#nlp-lp-wrap .plan.feat { background: linear-gradient(155deg,#B85C6E 0%,#9B7B9B 100%) !important; }
+#nlp-lp-wrap .btn-grad, #nlp-lp-wrap .nav-cta, #nlp-lp-wrap .fstep-circle { background: linear-gradient(135deg,#B85C6E,#9B7B9B) !important; color: white !important; }
+#nlp-lp-wrap .plan-price { font-family: 'Cormorant Garamond', serif !important; color: #B85C6E !important; }
+#nlp-lp-wrap .sec-label { color: #D4797A !important; }
+#nlp-lp-wrap .nlp-card::before { background: linear-gradient(90deg,#E8A4A4,#C4AACC) !important; }
+
+</style>
+<nav>
+  <div class="logo-wrap">
+    <span class="logo-main">NLPアストロコーチング</span>
+    <span class="logo-sub">Harada Hikari · Astro Coaching</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about" onclick="event.preventDefault();document.getElementById('about').scrollIntoView({behavior:'smooth'})">プロフィール</a></li>
+    <li><a href="#services" onclick="event.preventDefault();document.getElementById('services').scrollIntoView({behavior:'smooth'})">サービス</a></li>
+    <li><a href="#pricing" onclick="event.preventDefault();document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">料金</a></li>
+    <li><a href="#voices" onclick="event.preventDefault();document.getElementById('voices').scrollIntoView({behavior:'smooth'})">お客様の声</a></li>
+  </ul>
+  <a class="nav-cta" href="https://forms.gle/dqpmcRUQCUBhKFj2A" target="_blank" style="text-decoration:none;">無料相談を予約</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-deco">☽</div>
+  <div style="position:relative;z-index:1;">
+    <p class="hero-eyebrow">NLP × 占星術コーチング</p>
+    <h1>星が照らす<em>本来の自分</em>へ。<br><span class="accent">NLP</span>で加速させる<br>変容の旅。</h1>
+    <p class="hero-lead">生まれた瞬間の星の配置が示す「あなただけの地図」を読み解き、NLPのコーチング技術でマインドを整え、人生の新しいステージへ踏み出しましょう。</p>
+    <div class="nlp-pill">✦ NLPトレーナー × 占星術師による唯一無二のアプローチ</div>
+    <div class="hero-btns">
+      <a class="btn-grad" href="https://forms.gle/dqpmcRUQCUBhKFj2A" target="_blank" style="text-decoration:none;">無料相談を予約する</a>
+      <button class="btn-soft" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">サービスを見る</button>
+    </div>
+  </div>
+  <div class="hero-vis">
+    <div class="vis-outer">
+      <div class="vis-ring1">
+        <div class="ring-dot rd1"></div><div class="ring-dot rd2"></div>
+        <div class="ring-dot rd3"></div><div class="ring-dot rd4"></div><div class="ring-dot rd5"></div>
+        <div class="vis-ring2"><div class="vis-center"><div class="vis-glyph">☽</div></div></div>
+      </div>
+    </div>
+    <div class="float-chip fc1"><strong>占星術</strong>生まれ持った才能と課題</div>
+    <div class="float-chip fc2"><strong>NLP</strong>思考パターンを変える技術</div>
+  </div>
+</section>
+
+<section class="pillars-bg" style="padding:5rem 4rem;">
+  <p class="sec-label">Two Pillars</p>
+  <h2>ふたつの力を組み合わせる</h2>
+  <p class="sec-sub">占星術とNLPは、どちらも「自分を知り、変わる」ための強力なツール。組み合わせることで相乗効果が生まれます。</p>
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <div class="pillar-icon-wrap pi-rose">🌙</div>
+      <h3>占星術で「自分の設計図」を知る</h3>
+      <p>ホロスコープはあなたが生まれた瞬間の星の配置。太陽・月・アセンダントなど複数の天体が、才能・課題・人生テーマを多角的に示しています。まずここから「自分らしさ」を深く理解します。</p>
+      <span class="pillar-tag">Western Astrology</span>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon-wrap pi-mauve">✨</div>
+      <h3>NLPで「思考と行動」を変革する</h3>
+      <p>NLP（神経言語プログラミング）は、世界中のコーチやカウンセラーが活用するマインド変革の技術。星が示す「可能性」を現実に変えるため、信念・言語・行動パターンに直接アプローチして変容を加速します。</p>
+      <span class="pillar-tag">NLP Techniques</span>
+    </div>
+  </div>
+</section>
+
+<section class="nlp-bg" id="nlp">
+  <p class="sec-label">NLP Approach</p>
+  <h2>活用するNLPの主なテクニック</h2>
+  <p class="sec-sub">占星術で見えてきた課題や目標に対し、セッション内でこれらのNLP技術を組み合わせてアプローチします。</p>
+  <div class="nlp-grid">
+    <div class="nlp-card"><h4>リフレーミング</h4><p>出来事・経験の意味や視点を変え、制限的な信念を手放す。星が示す「苦手」をリソースに変換します。</p><span class="nlp-tag">Reframing</span></div>
+    <div class="nlp-card"><h4>タイムライン・セラピー</h4><p>過去の感情的な経験をクリアにし、望む未来のイメージを強化。ホロスコープのトランジットと連動させます。</p><span class="nlp-tag">Timeline Therapy</span></div>
+    <div class="nlp-card"><h4>アンカリング</h4><p>望ましい感情状態を身体的なアンカーに結びつけ、必要な瞬間にリソース状態を即座に引き出せるようにします。</p><span class="nlp-tag">Anchoring</span></div>
+    <div class="nlp-card"><h4>ビジュアライゼーション</h4><p>未来の理想像を五感を使って鮮明に描き、脳神経レベルで「すでに実現している」状態を先取りします。</p><span class="nlp-tag">Visualization</span></div>
+    <div class="nlp-card"><h4>パーツインテグレーション</h4><p>「変わりたいけど変われない」葛藤を解消。相反する内なる部分を統合し、一貫した行動力を引き出します。</p><span class="nlp-tag">Parts Integration</span></div>
+    <div class="nlp-card"><h4>ゴールセッティング</h4><p>NLPのWell-Formed Outcomeモデルで達成可能な目標を精緻に設定。星のサイクルと照らし合わせてプランを組みます。</p><span class="nlp-tag">Well-Formed Outcome</span></div>
+  </div>
+</section>
+
+<section class="about-bg" id="about">
+  <div class="about-grid">
+    <div class="about-frame" style="background:none;padding:0;">
+  <div style="width:100%;height:100%;background:linear-gradient(155deg,rgba(253,240,240,0.95),rgba(240,237,248,0.6));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(184,92,110,0.3);border-radius:2rem;">☽</div>
+</div>
+    <div class="about-txt">
+      <p class="sec-label" style="justify-content:flex-start;">Profile</p>
+      <h2 style="text-align:left;">原田 光</h2>
+      <span class="about-ruby">はらだ ひかり｜アストロコーチ</span>
+      <p>占星術との出会いは、30代半ば。仕事で行き詰まっている時に、初めて占星術のセッションを受けました。そこで初めて見たホロスコープは、人生の地図、意識の解剖図のようでした。</p>
+      <p>わたしが、何を望み、どんなプロセスを経てそれを実現していくのかが、描かれていたのです。</p>
+      <p>その後、NLP（神経言語プログラミング）のトレーナーとなり、星の智慧とマインドコーチングを融合させた独自のアプローチ「NLPアストロコーチング」を確立。30〜50代の方を中心に500名以上のセッションを重ねてきました。</p>
+      <p>「星を知ることは自分の可能性を知ること」「ホロスコープは意識の解剖図」この言葉を胸に、皆さんの人生の新ステージを全力でサポートします。</p>
+      <div class="cred-grid">
+        <div class="cred"><div class="cred-label">Certification 01</div><div class="cred-val">NLPトレーナー</div></div>
+        <div class="cred"><div class="cred-label">Certification 02</div><div class="cred-val">占星術師</div></div>
+        <div class="cred"><div class="cred-label">Experience</div><div class="cred-val">セッション500名以上</div></div>
+        <div class="cred"><div class="cred-label">Target</div><div class="cred-val">30〜50代のライフシフト</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="svc-bg" id="services">
+  <p class="sec-label">Services</p>
+  <h2>提供サービス</h2>
+  <p class="sec-sub">占星術×NLPの力で、あなたの現状を突破するセッションを提供します。</p>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <span class="svc-num">01</span>
+      <div class="svc-icon-wrap">🌙</div>
+      <h3>単発 NLPアストロコーチング</h3>
+      <p>1回完結のセッション（90分）。ホロスコープリーディングとNLPワークを組み合わせ、今あなたが抱えているテーマを深く掘り下げます。「まず試してみたい」方にぴったり。</p>
+      <div class="svc-detail">✦ 単発1回 ／ 90分 ／ オンライン対応 ／ ¥10,000</div>
+      <a href="https://forms.gle/a7g9L2pyXnqb5yMRA" target="_blank" style="display:block;margin-top:1.2rem;padding:0.85rem;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;text-align:center;text-decoration:none;font-size:0.75rem;letter-spacing:0.14em;border-radius:2rem;box-shadow:0 4px 16px rgba(184,92,110,0.25);transition:opacity 0.2s;">お申し込みはこちら →</a>
+    </div>
+    <div class="svc-card">
+      <span class="svc-num">02</span>
+      <div class="svc-icon-wrap">✨</div>
+      <h3>継続 NLPアストロコーチング</h3>
+      <p>2週に一度のセッションで、あなたの隠された可能性に光をあて、確実な変容をサポート。経過中の星の動きと連動したタイムリーなアドバイスが受けられるのが、継続セッションの強みです。</p>
+      <div class="svc-detail">✦ 月2回（60分）× 選択期間 ／ LINEフォロー付き</div>
+    </div>
+  </div>
+</section>
+
+<section class="price-bg" id="pricing">
+  <p class="sec-label">Pricing</p>
+  <h2>料金プラン</h2>
+  <p class="sec-sub">すべての継続プランは2週に1度60分のセッション。まずは無料相談でお気軽にご相談ください。</p>
+  <div class="plans">
+    <div class="plan">
+      <p class="plan-name">ライトプラン</p>
+      <p class="plan-price">¥18,000</p>
+      <span class="plan-period">税込</span>
+      <span class="plan-dur">1ヶ月 ／ 計2回</span>
+      <ul class="plan-features">
+        <li class="pf">60分セッション × 2回</li>
+        <li class="pf">2週に1度のペース</li>
+        <li class="pf">ホロスコープリーディング</li>
+        <li class="pf">NLPテクニック適用</li>
+        <li class="pf">セッション録画お渡し</li>
+      </ul>
+      <button class="pcta pcta-outline" onclick="openPlanModal('light')">詳しく見る</button>
+    </div>
+    <div class="plan feat">
+      <div class="plan-badge-wrap"><span class="plan-badge-pill">✦ 人気 No.1</span></div>
+      <p class="plan-name">スタンダードプラン</p>
+      <p class="plan-price">¥50,000</p>
+      <span class="plan-period">税込</span>
+      <span class="plan-dur">3ヶ月 ／ 計6回</span>
+      <ul class="plan-features">
+        <li class="pf">60分セッション × 6回</li>
+        <li class="pf">2週に1度のペース</li>
+        <li class="pf">詳細ホロスコープ鑑定書</li>
+        <li class="pf">NLP複数テクニック活用</li>
+        <li class="pf">LINEサポート（月4回）</li>
+        <li class="pf">月次天体レポート</li>
+      </ul>
+      <button class="pcta pcta-white" onclick="openPlanModal('standard')">詳しく見る</button>
+    </div>
+    <div class="plan">
+      <p class="plan-name">プレミアムプラン</p>
+      <p class="plan-price">¥90,000</p>
+      <span class="plan-period">税込</span>
+      <span class="plan-dur">6ヶ月 ／ 計12回</span>
+      <ul class="plan-features">
+        <li class="pf">60分セッション × 12回</li>
+        <li class="pf">2週に1度のペース</li>
+        <li class="pf">スタンダード内容すべて</li>
+        <li class="pf">LINEサポート無制限</li>
+        <li class="pf-special">ソーラーリターンセッション（誕生日図）プレゼント</li>
+        <li class="pf">終了後フォロー1回</li>
+      </ul>
+      <button class="pcta pcta-grad" onclick="openPlanModal('premium')">詳しく見る</button>
+    </div>
+  </div>
+</section>
+
+<section class="flow-bg">
+  <p class="sec-label">Flow</p>
+  <h2>ご利用の流れ</h2>
+  <p class="sec-sub">お申し込みから最初のセッションまでシンプルです。</p>
+  <div class="flow-steps">
+    <div class="fstep"><div class="fstep-circle">1</div><h4>無料相談</h4><p>30分のオリエンテーション。現状とご希望を<br>お聞きします。</p></div>
+    <div class="fstep"><div class="fstep-circle">2</div><h4>プラン選択</h4><p>状況に合ったプランを提供し<br>お申込みいただきます。</p></div>
+    <div class="fstep"><div class="fstep-circle">3</div><h4>ホロスコープ作成</h4><p>生年月日・出生時刻・出生地をもとにチャートを作成。</p></div>
+    <div class="fstep"><div class="fstep-circle">4</div><h4>セッション開始</h4><p>Zoomにて隔週60分のセッションをスタートします。</p></div>
+  </div>
+</section>
+
+<section class="voices-bg" id="voices">
+  <p class="sec-label">Voices</p>
+  <h2>お客様の声</h2>
+  <p class="sec-sub">セッションを体験された方のリアルな感想です。</p>
+  <div class="voices-grid">
+    <div class="vcard">
+      <div class="vquote">"</div>
+      <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="vtext">40代で転職を考えていたのですが、ホロスコープとNLPで「今まさに動き時」と確認できて背中を押してもらえました。タイムライン技法で過去のブロックも解消され、前向きに動けています。</p>
+      <div class="vauthor"><div class="vavatar va1">TN</div><div><p class="vname">T.N さん</p><p class="vsub">44歳・会社員（管理職）</p></div></div>
+    </div>
+    <div class="vcard">
+      <div class="vquote">"</div>
+      <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="vtext">占星術だけでは「そうなんだ」で終わっていたのが、NLPとセットになることで具体的な行動に結びつきました。3ヶ月で自己評価が大きく変わった実感があります。</p>
+      <div class="vauthor"><div class="vavatar va2">KM</div><div><p class="vname">K.M さん</p><p class="vsub">37歳・フリーランス</p></div></div>
+    </div>
+    <div class="vcard">
+      <div class="vquote">"</div>
+      <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="vtext">50代での再出発に迷いがありましたが、星が示す「今後のテーマ」を知り、NLPで内側の抵抗を取り除いたことで、ようやく自分を信じて動けるようになりました。</p>
+      <div class="vauthor"><div class="vavatar va3">YH</div><div><p class="vname">Y.H さん</p><p class="vsub">51歳・起業準備中</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-sec" id="cta">
+  <div class="cta-deco1"></div><div class="cta-deco2"></div>
+  <p class="sec-label">Contact</p>
+  <h2 style="color:white;">まずは、無料相談から<br>始めましょう。</h2>
+  <p class="sec-sub" style="color:rgba(255,255,255,0.7);">30分間の無料オリエンテーションで、あなたのホロスコープをご紹介し、最適なプランをご提案します。</p>
+  <a class="btn-cta-light" href="https://forms.gle/dqpmcRUQCUBhKFj2A" target="_blank" style="text-decoration:none;display:inline-block;">無料相談を予約する →</a>
+</section>
+
+<footer>
+  <span>NLPアストロコーチング</span> ｜ アストロコーチ 原田 光（はらだひかり）｜ © 2025 All rights reserved.
+</footer>
+
+<!-- ===== プラン詳細モーダル ===== -->
+<div id="plan-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(45,31,45,0.55);backdrop-filter:blur(4px);overflow-y:auto;padding:2rem 1rem;">
+  <div style="max-width:740px;margin:0 auto;position:relative;">
+    <button onclick="closePlanModal()" style="position:sticky;top:0;float:right;margin-bottom:0.5rem;background:white;border:1px solid var(--border);border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;color:var(--muted);box-shadow:0 2px 12px rgba(0,0,0,0.15);z-index:10000;">✕</button>
+    <div style="clear:both;"></div>
+    <!-- タブ -->
+    <div class="modal-tabs" style="display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <button class="mtab active" id="mtab-light" onclick="switchModalTab('light',this)" style="padding:0.6rem 1.6rem;border-radius:2rem;font-size:0.78rem;letter-spacing:0.1em;border:1.5px solid var(--rose);background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;cursor:pointer;">ライトプラン</button>
+      <button class="mtab" id="mtab-standard" onclick="switchModalTab('standard',this)" style="padding:0.6rem 1.6rem;border-radius:2rem;font-size:0.78rem;letter-spacing:0.1em;border:1.5px solid var(--rose);background:white;color:var(--muted);cursor:pointer;">スタンダードプラン</button>
+      <button class="mtab" id="mtab-premium" onclick="switchModalTab('premium',this)" style="padding:0.6rem 1.6rem;border-radius:2rem;font-size:0.78rem;letter-spacing:0.1em;border:1.5px solid var(--rose);background:white;color:var(--muted);cursor:pointer;">プレミアムプラン</button>
+    </div>
+
+    <!-- LIGHT -->
+    <div class="mpanel" id="mpanel-light">
+      <div style="background:white;border-radius:1.5rem 1.5rem 0 0;padding:2.2rem 2.5rem 1.8rem;border:1px solid rgba(232,164,164,0.2);border-bottom:none;">
+        <p style="font-size:0.63rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--rose-mid);margin-bottom:0.5rem;">Light Plan</p>
+        <h2 style="font-family:'Shippori Mincho',serif;font-size:1.7rem;font-weight:500;color:var(--text);margin-bottom:0.7rem;text-align:left;">ライトプラン</h2>
+        <div style="display:flex;align-items:baseline;gap:0.4rem;margin-bottom:0.5rem;"><span style="font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--rose-deep);">¥18,000</span><span style="font-size:0.76rem;color:var(--muted);">税込</span></div>
+        <span style="display:inline-block;background:rgba(184,92,110,0.08);border:1px solid rgba(184,92,110,0.2);color:var(--rose-deep);font-size:0.7rem;padding:0.28rem 0.9rem;border-radius:2rem;">1ヶ月 ／ 2週に1度（計2回）</span>
+      </div>
+      <div style="background:white;border-radius:0 0 1.5rem 1.5rem;border:1px solid rgba(232,164,164,0.2);border-top:1px solid var(--border);box-shadow:0 8px 30px rgba(200,150,170,0.1);overflow:hidden;">
+        <div class="macc-item">
+          <button class="macc-trigger open" onclick="mtoggle(this)" style="width:100%;background:rgba(253,240,240,0.7);border:none;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;">
+            <span style="font-family:'Shippori Mincho',serif;font-size:0.95rem;font-weight:500;color:var(--text);">プランに含まれる内容</span>
+            <span class="macc-icon" style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;transform:rotate(180deg);"><svg viewBox="0 0 10 6" style="width:10px;height:10px;fill:none;stroke:white;stroke-width:2.5;"><polyline points="1,1 5,5 9,1"/></svg></span>
+          </button>
+          <div class="macc-body" style="overflow:hidden;max-height:600px;transition:max-height 0.4s ease;">
+            <div style="padding:0.5rem 2.5rem 2rem;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.4rem;">
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🌙</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">60分セッション × 2回</strong>Zoomによるオンライン対応</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">⭐</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">ホロスコープリーディング</strong>出生図をもとに才能・課題を読み解き</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">✨</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">NLPテクニック適用</strong>セッション内でワーク実施</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🎬</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">セッション録画お渡し</strong>復習・振り返りに活用できます</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">📅</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">2週に1度のペース</strong>無理なく継続できる間隔</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">📋</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">事前ヒアリングシート</strong>テーマを整理してから臨めます</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="macc-item" style="border-top:1px solid var(--border);">
+          <button class="macc-trigger" onclick="mtoggle(this)" style="width:100%;background:none;border:none;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;">
+            <span style="font-family:'Shippori Mincho',serif;font-size:0.95rem;font-weight:500;color:var(--text);">こんな方におすすめ</span>
+            <span class="macc-icon" style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;"><svg viewBox="0 0 10 6" style="width:10px;height:10px;fill:none;stroke:white;stroke-width:2.5;"><polyline points="1,1 5,5 9,1"/></svg></span>
+          </button>
+          <div class="macc-body" style="overflow:hidden;max-height:0;transition:max-height 0.4s ease;">
+            <div style="padding:0.5rem 2.5rem 2rem;">
+              <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.4rem;">
+                <div style="display:flex;align-items:flex-start;gap:0.7rem;background:linear-gradient(135deg,rgba(253,240,240,0.6),rgba(240,237,248,0.4));border-radius:0.8rem;padding:0.8rem 1rem;"><div style="width:6px;height:6px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:0.45rem;"></div><p style="font-size:0.82rem;color:var(--muted);line-height:1.7;">NLPアストロコーチングを初めて体験したい方</p></div>
+                <div style="display:flex;align-items:flex-start;gap:0.7rem;background:linear-gradient(135deg,rgba(253,240,240,0.6),rgba(240,237,248,0.4));border-radius:0.8rem;padding:0.8rem 1rem;"><div style="width:6px;height:6px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:0.45rem;"></div><p style="font-size:0.82rem;color:var(--muted);line-height:1.7;">まず1ヶ月、自分の星と向き合ってみたい方</p></div>
+                <div style="display:flex;align-items:flex-start;gap:0.7rem;background:linear-gradient(135deg,rgba(253,240,240,0.6),rgba(240,237,248,0.4));border-radius:0.8rem;padding:0.8rem 1rem;"><div style="width:6px;height:6px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:0.45rem;"></div><p style="font-size:0.82rem;color:var(--muted);line-height:1.7;">特定のテーマ（仕事・人間関係・転機など）に集中して取り組みたい方</p></div>
+                <div style="display:flex;align-items:flex-start;gap:0.7rem;background:linear-gradient(135deg,rgba(253,240,240,0.6),rgba(240,237,248,0.4));border-radius:0.8rem;padding:0.8rem 1rem;"><div style="width:6px;height:6px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:0.45rem;"></div><p style="font-size:0.82rem;color:var(--muted);line-height:1.7;">継続プランに進む前に相性を確かめたい方</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="macc-item" style="border-top:1px solid var(--border);">
+          <button class="macc-trigger" onclick="mtoggle(this)" style="width:100%;background:none;border:none;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;">
+            <span style="font-family:'Shippori Mincho',serif;font-size:0.95rem;font-weight:500;color:var(--text);">よくある質問</span>
+            <span class="macc-icon" style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;"><svg viewBox="0 0 10 6" style="width:10px;height:10px;fill:none;stroke:white;stroke-width:2.5;"><polyline points="1,1 5,5 9,1"/></svg></span>
+          </button>
+          <div class="macc-body" style="overflow:hidden;max-height:0;transition:max-height 0.4s ease;">
+            <div style="padding:0.5rem 2.5rem 2rem;">
+              <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:0.4rem;">
+                <div style="border-left:2px solid var(--rose);padding-left:1rem;"><p style="font-size:0.82rem;color:var(--text);margin-bottom:0.32rem;">Q. 占星術やNLPの知識がなくても大丈夫ですか？</p><p style="font-size:0.79rem;color:var(--muted);line-height:1.8;">A. まったく問題ありません。初めての方を前提に、わかりやすい言葉でお伝えします。</p></div>
+                <div style="border-left:2px solid var(--rose);padding-left:1rem;"><p style="font-size:0.82rem;color:var(--text);margin-bottom:0.32rem;">Q. 出生時刻がわからない場合はどうなりますか？</p><p style="font-size:0.79rem;color:var(--muted);line-height:1.8;">A. 出生時刻なしでも鑑定は可能です。わかる範囲の情報でお申し込みください。</p></div>
+                <div style="border-left:2px solid var(--rose);padding-left:1rem;"><p style="font-size:0.82rem;color:var(--text);margin-bottom:0.32rem;">Q. ライトプランから継続プランに変更できますか？</p><p style="font-size:0.79rem;color:var(--muted);line-height:1.8;">A. はい、可能です。ライトプラン終了後にスタンダード・プレミアムへの移行をご相談いただけます。</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding:1.5rem 2.5rem 2rem;">
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.8;">まずは30分の無料相談から。現在のお悩みやご状況をお聞きし、ライトプランが合っているかを一緒に確認します。</p>
+          <a href="https://forms.gle/dqpmcRUQCUBhKFj2A" target="_blank" style="display:block;width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;padding:1rem;font-size:0.8rem;letter-spacing:0.15em;border:none;cursor:pointer;border-radius:3rem;box-shadow:0 4px 20px rgba(184,92,110,0.28);text-align:center;text-decoration:none;box-sizing:border-box;">無料相談を予約する →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STANDARD -->
+    <div class="mpanel" id="mpanel-standard" style="display:none;">
+      <div style="background:white;border-radius:1.5rem 1.5rem 0 0;padding:2.2rem 2.5rem 1.8rem;border:1px solid rgba(232,164,164,0.2);border-bottom:none;">
+        <div style="display:inline-flex;align-items:center;gap:0.4rem;background:linear-gradient(90deg,var(--gold),var(--gold-light));color:var(--text);font-size:0.65rem;letter-spacing:0.1em;padding:0.25rem 0.9rem;border-radius:2rem;margin-bottom:0.8rem;">✦ 人気 No.1</div>
+        <p style="font-size:0.63rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--rose-mid);margin-bottom:0.5rem;">Standard Plan</p>
+        <h2 style="font-family:'Shippori Mincho',serif;font-size:1.7rem;font-weight:500;color:var(--text);margin-bottom:0.7rem;text-align:left;">スタンダードプラン</h2>
+        <div style="display:flex;align-items:baseline;gap:0.4rem;margin-bottom:0.5rem;"><span style="font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--rose-deep);">¥50,000</span><span style="font-size:0.76rem;color:var(--muted);">税込</span></div>
+        <span style="display:inline-block;background:rgba(184,92,110,0.08);border:1px solid rgba(184,92,110,0.2);color:var(--rose-deep);font-size:0.7rem;padding:0.28rem 0.9rem;border-radius:2rem;">3ヶ月 ／ 2週に1度（計6回）</span>
+      </div>
+      <div style="background:white;border-radius:0 0 1.5rem 1.5rem;border:1px solid rgba(232,164,164,0.2);border-top:1px solid var(--border);box-shadow:0 8px 30px rgba(200,150,170,0.1);overflow:hidden;">
+        <div class="macc-item">
+          <button class="macc-trigger open" onclick="mtoggle(this)" style="width:100%;background:rgba(253,240,240,0.7);border:none;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;">
+            <span style="font-family:'Shippori Mincho',serif;font-size:0.95rem;font-weight:500;color:var(--text);">プランに含まれる内容</span>
+            <span class="macc-icon" style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;transform:rotate(180deg);"><svg viewBox="0 0 10 6" style="width:10px;height:10px;fill:none;stroke:white;stroke-width:2.5;"><polyline points="1,1 5,5 9,1"/></svg></span>
+          </button>
+          <div class="macc-body" style="overflow:hidden;max-height:600px;transition:max-height 0.4s ease;">
+            <div style="padding:0.5rem 2.5rem 2rem;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.4rem;">
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🌙</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">60分セッション × 6回</strong>3ヶ月間、継続的にサポート</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">📖</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">パーソナル星読みレポート</strong>PDFでお渡し、手元に残せます</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">✨</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">NLP複数テクニック活用</strong>テーマに応じて最適な技法を選択</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">💬</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">LINEサポート（月4回）</strong>セッション間の気づきや質問に対応</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🌟</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">月次天体レポート</strong>その月の星の動きとアドバイス</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🎬</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">セッション録画お渡し</strong>全セッション分をご提供</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding:1.5rem 2.5rem 2rem;">
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.8;">まずは30分の無料相談から。3ヶ月でどんな変化を目指すか、一緒にイメージを描きます。</p>
+          <a href="https://forms.gle/dqpmcRUQCUBhKFj2A" target="_blank" style="display:block;width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;padding:1rem;font-size:0.8rem;letter-spacing:0.15em;border:none;cursor:pointer;border-radius:3rem;box-shadow:0 4px 20px rgba(184,92,110,0.28);text-align:center;text-decoration:none;box-sizing:border-box;">無料相談を予約する →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="mpanel" id="mpanel-premium" style="display:none;">
+      <div style="background:white;border-radius:1.5rem 1.5rem 0 0;padding:2.2rem 2.5rem 1.8rem;border:1px solid rgba(232,164,164,0.2);border-bottom:none;">
+        <p style="font-size:0.63rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--rose-mid);margin-bottom:0.5rem;">Premium Plan</p>
+        <h2 style="font-family:'Shippori Mincho',serif;font-size:1.7rem;font-weight:500;color:var(--text);margin-bottom:0.7rem;text-align:left;">プレミアムプラン</h2>
+        <div style="display:flex;align-items:baseline;gap:0.4rem;margin-bottom:0.5rem;"><span style="font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--rose-deep);">¥90,000</span><span style="font-size:0.76rem;color:var(--muted);">税込</span></div>
+        <span style="display:inline-block;background:rgba(184,92,110,0.08);border:1px solid rgba(184,92,110,0.2);color:var(--rose-deep);font-size:0.7rem;padding:0.28rem 0.9rem;border-radius:2rem;">6ヶ月 ／ 2週に1度（計12回）</span>
+      </div>
+      <div style="background:white;border-radius:0 0 1.5rem 1.5rem;border:1px solid rgba(232,164,164,0.2);border-top:1px solid var(--border);box-shadow:0 8px 30px rgba(200,150,170,0.1);overflow:hidden;">
+        <div class="macc-item">
+          <button class="macc-trigger open" onclick="mtoggle(this)" style="width:100%;background:rgba(253,240,240,0.7);border:none;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;">
+            <span style="font-family:'Shippori Mincho',serif;font-size:0.95rem;font-weight:500;color:var(--text);">プランに含まれる内容</span>
+            <span class="macc-icon" style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;transform:rotate(180deg);"><svg viewBox="0 0 10 6" style="width:10px;height:10px;fill:none;stroke:white;stroke-width:2.5;"><polyline points="1,1 5,5 9,1"/></svg></span>
+          </button>
+          <div class="macc-body" style="overflow:hidden;max-height:600px;transition:max-height 0.4s ease;">
+            <div style="padding:0.5rem 2.5rem 2rem;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.4rem;">
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🌙</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">60分セッション × 12回</strong>6ヶ月間の本格的な伴走サポート</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">📖</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">パーソナル星読みレポート</strong>スタンダード内容すべてを含む</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">✨</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">NLP複数テクニック活用</strong>深いレベルまで丁寧にアプローチ</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">💬</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">LINEサポート無制限</strong>いつでも気軽に相談・報告できます</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🌟</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">月次天体レポート</strong>6ヶ月分、毎月お届けします</div></div>
+                <div style="background:linear-gradient(135deg,rgba(253,240,240,0.8),rgba(240,237,248,0.6));border:1px solid rgba(201,169,110,0.3);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🎁</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--rose-deep);font-weight:400;margin-bottom:0.1rem;">ソーラーリターンセッション</strong>誕生日図を読む特別セッションプレゼント</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🎬</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">全セッション録画お渡し</strong>12回分すべてをご提供</div></div>
+                <div style="background:var(--ivory);border:1px solid var(--border);border-radius:0.8rem;padding:0.75rem 0.9rem;display:flex;gap:0.55rem;"><span style="font-size:0.95rem;flex-shrink:0;">🌸</span><div style="font-size:0.78rem;color:var(--muted);line-height:1.6;"><strong style="display:block;font-size:0.8rem;color:var(--text);font-weight:400;margin-bottom:0.1rem;">終了後フォロー1回</strong>終了後も安心のアフターケア</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding:1.5rem 2.5rem 2rem;">
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.8;">6ヶ月間、本気で自分と向き合う旅へ。まずは無料相談で、あなたの現在地と描きたい未来を一緒に確認しましょう。</p>
+          <a href="https://forms.gle/dqpmcRUQCUBhKFj2A" target="_blank" style="display:block;width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--mauve));color:white;padding:1rem;font-size:0.8rem;letter-spacing:0.15em;border:none;cursor:pointer;border-radius:3rem;box-shadow:0 4px 20px rgba(184,92,110,0.28);text-align:center;text-decoration:none;box-sizing:border-box;">無料相談を予約する →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function openPlanModal(plan) {
+  document.getElementById('plan-modal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  switchModalTab(plan, document.getElementById('mtab-' + plan));
+  document.getElementById('plan-modal').scrollTop = 0;
+}
+function closePlanModal() {
+  document.getElementById('plan-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('plan-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePlanModal();
+});
+function switchModalTab(plan, tabEl) {
+  document.querySelectorAll('.mtab').forEach(t => {
+    t.style.background = 'white';
+    t.style.color = 'var(--muted)';
+  });
+  tabEl.style.background = 'linear-gradient(135deg,var(--rose-deep),var(--mauve))';
+  tabEl.style.color = 'white';
+  document.querySelectorAll('.mpanel').forEach(p => p.style.display = 'none');
+  document.getElementById('mpanel-' + plan).style.display = 'block';
+}
+function mtoggle(btn) {
+  const body = btn.nextElementSibling;
+  const icon = btn.querySelector('.macc-icon');
+  const isOpen = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+  if (isOpen) {
+    body.style.maxHeight = '0px';
+    icon.style.transform = '';
+  } else {
+    body.style.maxHeight = '1000px';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+</script>
+</div>
